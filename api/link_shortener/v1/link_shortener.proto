@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package api.link_shortener.v1;
+
+option go_package = "github.com/olezhek28/link-shortener/pkg";
+
+import "google/api/annotations.proto";
+//import "validate/validate.proto";
+
+service LinkShortenerService{
+  rpc GetShortLink(GetShortLinkRequest) returns (GetShortLinkResponse) {
+    option (google.api.http) = {
+      post: "/link-shortener/v1/short-link/get"
+      body: "*"
+    };
+  }
+  rpc GetLongLink(GetLongLinkRequest) returns (GetLongLinkResponse) {
+    option (google.api.http) = {
+      post: "/link-shortener/v1/long-link/get"
+      body: "*"
+    };
+  }
+}
+
+message GetShortLinkRequest {
+  string long_link = 1 [json_name = "long_link"];
+}
+
+message GetShortLinkResponse {
+  message Result {
+    string short_link = 1;
+  }
+
+  Result result = 1;
+}
+
+message GetLongLinkRequest {
+  string short_link = 1;
+}
+
+message GetLongLinkResponse {
+  message Result {
+    string long_link = 1;
+  }
+
+  Result result = 1;
+}
