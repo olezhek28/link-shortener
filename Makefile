@@ -1,3 +1,8 @@
+PHONY: lint-full
+lint-full:
+	golangci-lint run --config=.golangci.pipeline.yaml ./...
+
+
 PHONY: vendor-proto
 vendor-proto: .vendor-proto
 
