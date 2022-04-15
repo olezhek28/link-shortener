@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package api.link_shortener.v1;
 
-option go_package = "github.com/olezhek28/link-shortener/pkg";
+option go_package = "github.com/olezhek28/link-shortener/pkg; link_shortener_v1";
 
 import "google/api/annotations.proto";
 //import "validate/validate.proto";
 
-service LinkShortenerService{
+service LinkShortenerV1{
   rpc GetShortLink(GetShortLinkRequest) returns (GetShortLinkResponse) {
     option (google.api.http) = {
       post: "/link-shortener/v1/short-link/get"

@@ -2,11 +2,11 @@
 // source: link_shortener/v1/link_shortener.proto
 
 /*
-Package pkg is a reverse proxy.
+Package  link_shortener_v1 is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package pkg
+package link_shortener_v1
 
 import (
 	"context"
@@ -33,7 +33,7 @@ var _ = utilities.NewDoubleArray
 var _ = descriptor.ForMessage
 var _ = metadata.Join
 
-func request_LinkShortenerService_GetShortLink_0(ctx context.Context, marshaler runtime.Marshaler, client LinkShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_LinkShortenerV1_GetShortLink_0(ctx context.Context, marshaler runtime.Marshaler, client LinkShortenerV1Client, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetShortLinkRequest
 	var metadata runtime.ServerMetadata
 
@@ -50,7 +50,7 @@ func request_LinkShortenerService_GetShortLink_0(ctx context.Context, marshaler 
 
 }
 
-func local_request_LinkShortenerService_GetShortLink_0(ctx context.Context, marshaler runtime.Marshaler, server LinkShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_LinkShortenerV1_GetShortLink_0(ctx context.Context, marshaler runtime.Marshaler, server LinkShortenerV1Server, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetShortLinkRequest
 	var metadata runtime.ServerMetadata
 
@@ -67,7 +67,7 @@ func local_request_LinkShortenerService_GetShortLink_0(ctx context.Context, mars
 
 }
 
-func request_LinkShortenerService_GetLongLink_0(ctx context.Context, marshaler runtime.Marshaler, client LinkShortenerServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_LinkShortenerV1_GetLongLink_0(ctx context.Context, marshaler runtime.Marshaler, client LinkShortenerV1Client, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetLongLinkRequest
 	var metadata runtime.ServerMetadata
 
@@ -84,7 +84,7 @@ func request_LinkShortenerService_GetLongLink_0(ctx context.Context, marshaler r
 
 }
 
-func local_request_LinkShortenerService_GetLongLink_0(ctx context.Context, marshaler runtime.Marshaler, server LinkShortenerServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_LinkShortenerV1_GetLongLink_0(ctx context.Context, marshaler runtime.Marshaler, server LinkShortenerV1Server, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetLongLinkRequest
 	var metadata runtime.ServerMetadata
 
@@ -101,13 +101,13 @@ func local_request_LinkShortenerService_GetLongLink_0(ctx context.Context, marsh
 
 }
 
-// RegisterLinkShortenerServiceHandlerServer registers the http handlers for service LinkShortenerService to "mux".
-// UnaryRPC     :call LinkShortenerServiceServer directly.
+// RegisterLinkShortenerV1HandlerServer registers the http handlers for service LinkShortenerV1 to "mux".
+// UnaryRPC     :call LinkShortenerV1Server directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterLinkShortenerServiceHandlerFromEndpoint instead.
-func RegisterLinkShortenerServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server LinkShortenerServiceServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterLinkShortenerV1HandlerFromEndpoint instead.
+func RegisterLinkShortenerV1HandlerServer(ctx context.Context, mux *runtime.ServeMux, server LinkShortenerV1Server) error {
 
-	mux.Handle("POST", pattern_LinkShortenerService_GetShortLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_LinkShortenerV1_GetShortLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -118,7 +118,7 @@ func RegisterLinkShortenerServiceHandlerServer(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_LinkShortenerService_GetShortLink_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_LinkShortenerV1_GetShortLink_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -126,11 +126,11 @@ func RegisterLinkShortenerServiceHandlerServer(ctx context.Context, mux *runtime
 			return
 		}
 
-		forward_LinkShortenerService_GetShortLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_LinkShortenerV1_GetShortLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_LinkShortenerService_GetLongLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_LinkShortenerV1_GetLongLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -141,7 +141,7 @@ func RegisterLinkShortenerServiceHandlerServer(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_LinkShortenerService_GetLongLink_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_LinkShortenerV1_GetLongLink_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -149,16 +149,16 @@ func RegisterLinkShortenerServiceHandlerServer(ctx context.Context, mux *runtime
 			return
 		}
 
-		forward_LinkShortenerService_GetLongLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_LinkShortenerV1_GetLongLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterLinkShortenerServiceHandlerFromEndpoint is same as RegisterLinkShortenerServiceHandler but
+// RegisterLinkShortenerV1HandlerFromEndpoint is same as RegisterLinkShortenerV1Handler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterLinkShortenerServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterLinkShortenerV1HandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -178,23 +178,23 @@ func RegisterLinkShortenerServiceHandlerFromEndpoint(ctx context.Context, mux *r
 		}()
 	}()
 
-	return RegisterLinkShortenerServiceHandler(ctx, mux, conn)
+	return RegisterLinkShortenerV1Handler(ctx, mux, conn)
 }
 
-// RegisterLinkShortenerServiceHandler registers the http handlers for service LinkShortenerService to "mux".
+// RegisterLinkShortenerV1Handler registers the http handlers for service LinkShortenerV1 to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterLinkShortenerServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterLinkShortenerServiceHandlerClient(ctx, mux, NewLinkShortenerServiceClient(conn))
+func RegisterLinkShortenerV1Handler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterLinkShortenerV1HandlerClient(ctx, mux, NewLinkShortenerV1Client(conn))
 }
 
-// RegisterLinkShortenerServiceHandlerClient registers the http handlers for service LinkShortenerService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "LinkShortenerServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "LinkShortenerServiceClient"
+// RegisterLinkShortenerV1HandlerClient registers the http handlers for service LinkShortenerV1
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "LinkShortenerV1Client".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "LinkShortenerV1Client"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "LinkShortenerServiceClient" to call the correct interceptors.
-func RegisterLinkShortenerServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client LinkShortenerServiceClient) error {
+// "LinkShortenerV1Client" to call the correct interceptors.
+func RegisterLinkShortenerV1HandlerClient(ctx context.Context, mux *runtime.ServeMux, client LinkShortenerV1Client) error {
 
-	mux.Handle("POST", pattern_LinkShortenerService_GetShortLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_LinkShortenerV1_GetShortLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -203,18 +203,18 @@ func RegisterLinkShortenerServiceHandlerClient(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_LinkShortenerService_GetShortLink_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_LinkShortenerV1_GetShortLink_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_LinkShortenerService_GetShortLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_LinkShortenerV1_GetShortLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_LinkShortenerService_GetLongLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_LinkShortenerV1_GetLongLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -223,14 +223,14 @@ func RegisterLinkShortenerServiceHandlerClient(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_LinkShortenerService_GetLongLink_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_LinkShortenerV1_GetLongLink_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_LinkShortenerService_GetLongLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_LinkShortenerV1_GetLongLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -238,13 +238,13 @@ func RegisterLinkShortenerServiceHandlerClient(ctx context.Context, mux *runtime
 }
 
 var (
-	pattern_LinkShortenerService_GetShortLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"link-shortener", "v1", "short-link", "get"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_LinkShortenerV1_GetShortLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"link-shortener", "v1", "short-link", "get"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_LinkShortenerService_GetLongLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"link-shortener", "v1", "long-link", "get"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_LinkShortenerV1_GetLongLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"link-shortener", "v1", "long-link", "get"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_LinkShortenerService_GetShortLink_0 = runtime.ForwardResponseMessage
+	forward_LinkShortenerV1_GetShortLink_0 = runtime.ForwardResponseMessage
 
-	forward_LinkShortenerService_GetLongLink_0 = runtime.ForwardResponseMessage
+	forward_LinkShortenerV1_GetLongLink_0 = runtime.ForwardResponseMessage
 )
