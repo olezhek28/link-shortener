@@ -115,6 +115,7 @@ func (a *App) runGRPC(wg *sync.WaitGroup) error {
 		}
 	}()
 
+	log.Printf("Run gRPC server on %s port\n", grpcPort)
 	return nil
 }
 
@@ -127,5 +128,6 @@ func (a *App) runPublicHTTP(wg *sync.WaitGroup) error {
 		}
 	}()
 
+	log.Printf("Run public http handler on %s port\n", httpPort)
 	return nil
 }
