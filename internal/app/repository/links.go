@@ -12,7 +12,7 @@ type ILinks interface {
 type linksRepository struct {
 }
 
-func NewLinksRepository() ILinks {
+func NewLinksRepository(ctx context.Context) ILinks {
 	return &linksRepository{}
 }
 

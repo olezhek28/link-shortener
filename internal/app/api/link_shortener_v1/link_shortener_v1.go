@@ -8,10 +8,10 @@ import (
 type Implementation struct {
 	desc.UnimplementedLinkShortenerV1Server
 
-	linkShortenerService linkShortener.Service
+	linkShortenerService *linkShortener.Service
 }
 
-func NewLinkShortenerV1(linkShortenerService linkShortener.Service) *Implementation {
+func NewLinkShortenerV1(linkShortenerService *linkShortener.Service) *Implementation {
 	return &Implementation{
 		desc.UnimplementedLinkShortenerV1Server{},
 
