@@ -19,9 +19,9 @@ func NewLinkShortenerV1(linkShortenerService *linkShortener.Service) *Implementa
 	}
 }
 
-func newMockLinkShortenerV1(i Implementation) *Implementation {
-	return &Implementation{
-		desc.UnimplementedLinkShortenerV1Server{},
-		i.linkShortenerService,
-	}
-}
+// func newMockLinkShortenerV1(i Implementation) *Implementation {
+//	return &Implementation{
+//		desc.UnimplementedLinkShortenerV1Server{},
+//		i.linkShortenerService,
+//	}
+// }

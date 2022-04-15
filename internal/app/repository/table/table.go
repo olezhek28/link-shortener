@@ -1,6 +1,6 @@
 package table
 
 // DB table names
-const (
-	links = "links"
-)
+// const (
+//	links = "links"
+// )

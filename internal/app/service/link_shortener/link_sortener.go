@@ -13,15 +13,15 @@ func NewLinkShortenerService(linksRepository repository.ILinks) *Service {
 }
 
 // NewMockInternalService ...
-func NewMockInternalService(deps ...interface{}) *Service {
-	lss := Service{}
-
-	for _, v := range deps {
-		switch s := v.(type) {
-		case repository.ILinks:
-			lss.linksRepository = s
-		}
-	}
-
-	return &lss
-}
+// func NewMockInternalService(deps ...interface{}) *Service {
+//	lss := Service{}
+//
+//	for _, v := range deps {
+//		switch s := v.(type) {
+//		case repository.ILinks:
+//			lss.linksRepository = s
+//		}
+//	}
+//
+//	return &lss
+// }

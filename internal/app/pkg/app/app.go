@@ -42,7 +42,7 @@ func (a *App) Run() error {
 		return err
 	}
 
-	a.runPublicHTTP(wg)
+	err = a.runPublicHTTP(wg)
 	if err != nil {
 		return err
 	}
