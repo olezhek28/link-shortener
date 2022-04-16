@@ -22,10 +22,9 @@ services:
         ports:
         - "5445:5432"
 
-#    goose:
-#        build: ./migrations/
-#        environment:
-#            DB_HOST: db
-#        ports:
-#            - "5446:5432"
-#        command: [ "postgres", "-c", "log_statement=all" ]
+    goose:
+        build: ./migrations/
+        environment:
+            DB_HOST: db
+        ports:
+            - "5446:5432"
