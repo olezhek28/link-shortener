@@ -9,9 +9,8 @@ plugins:
   - name: grpc-gateway
     out: pkg/
     opt: paths=source_relative
-#  - name: openapiv2
-#    out: pkg/
-#    opt: paths=source_relative
+  - name: openapiv2
+    out: pkg/
 #  - name: validate
 #    out: pkg/
 #    opt: paths=source_relative

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"strings"
 	"time"
 )
@@ -18,8 +19,10 @@ type Config struct {
 
 // GetDbConfig ...
 func GetDbConfig() *Config {
-	password := ""
-	DbDsn := ""
+	password := "sample_pass"
+	DbDsn := fmt.Sprintf("host=%s port=%s user=%s password={password} dbname=%s sslmode=%s",
+		"localhost", "5445", "postgres", "sample_db", "disable")
+
 	dbDsn := strings.ReplaceAll(DbDsn, dbPassEscSeq, password)
 
 	return &Config{
