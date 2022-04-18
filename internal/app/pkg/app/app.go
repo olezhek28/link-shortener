@@ -57,6 +57,7 @@ func (a *App) initDeps(ctx context.Context) error {
 		a.initServer,
 		a.initGRPCServer,
 		a.initPublicHTTPHandlers,
+		a.initDB,
 	}
 
 	for _, f := range inits {
@@ -94,6 +95,15 @@ func (a *App) initPublicHTTPHandlers(ctx context.Context) error {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
 	err := desc.RegisterLinkShortenerV1HandlerFromEndpoint(ctx, a.mux, grpcPort, opts)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *App) initDB(ctx context.Context) error {
+	err := a.serviceProvider.DB.Open()
 	if err != nil {
 		return err
 	}
