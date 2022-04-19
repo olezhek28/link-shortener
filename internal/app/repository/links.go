@@ -43,6 +43,7 @@ func (r *linksRepository) GetLongLink(ctx context.Context, shortLink string) (st
 	if err != nil {
 		return "", err
 	}
+	defer row.Close()
 
 	row.Next()
 	var longLink string
@@ -71,6 +72,7 @@ func (r *linksRepository) GetShortLink(ctx context.Context, longLink string) (st
 	if err != nil {
 		return "", err
 	}
+	defer row.Close()
 
 	row.Next()
 	var shortLink string
