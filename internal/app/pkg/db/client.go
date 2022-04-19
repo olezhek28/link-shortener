@@ -32,6 +32,10 @@ func (c *client) Open() error {
 		fmt.Errorf("failed to opening connection to db: %s", err.Error())
 	}
 
+	c.db.SetMaxOpenConns(c.config.MaxOpenConns)
+	c.db.SetConnMaxIdleTime(c.config.ConnMaxIdleTime)
+	c.db.SetMaxIdleConns(c.config.MaxIdleConns)
+
 	return nil
 }
 

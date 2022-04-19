@@ -11,10 +11,10 @@ const (
 )
 
 type Config struct {
-	DbDsn                string
-	DbMaxOpenConnects    int
-	DbTimeout            time.Duration
-	DbMaxIdleConnections int
+	DbDsn           string
+	MaxOpenConns    int
+	ConnMaxIdleTime time.Duration
+	MaxIdleConns    int
 }
 
 // GetDbConfig ...
@@ -26,9 +26,9 @@ func GetDbConfig() *Config {
 	dbDsn := strings.ReplaceAll(DbDsn, dbPassEscSeq, password)
 
 	return &Config{
-		DbDsn:                dbDsn,
-		DbMaxOpenConnects:    20,
-		DbTimeout:            3 * time.Second,
-		DbMaxIdleConnections: 2,
+		DbDsn:           dbDsn,
+		MaxOpenConns:    20,
+		ConnMaxIdleTime: 3 * time.Second,
+		MaxIdleConns:    2,
 	}
 }
