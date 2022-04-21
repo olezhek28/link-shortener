@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	linkShortenerV1 "github.com/olezhek28/link-shortener/internal/app/api/link_shortener_v1"
+	"github.com/olezhek28/link-shortener/internal/app/api/linkShortenerV1"
 	desc "github.com/olezhek28/link-shortener/pkg/link_shortener/v1"
 	"google.golang.org/grpc"
 )

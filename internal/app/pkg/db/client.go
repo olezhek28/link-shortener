@@ -3,9 +3,7 @@ package db
 import (
 	"fmt"
 
-	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
 )
 
 type IClient interface {
@@ -29,7 +27,7 @@ func (c *client) Open() error {
 	var err error
 	c.db, err = sqlx.Open("pgx", c.config.DbDsn)
 	if err != nil {
-		fmt.Errorf("failed to opening connection to db: %s", err.Error())
+		return fmt.Errorf("failed to opening connection to db: %s", err.Error())
 	}
 
 	c.db.SetMaxOpenConns(c.config.MaxOpenConns)

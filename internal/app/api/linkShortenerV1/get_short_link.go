@@ -1,4 +1,4 @@
-package link_shortener_v1
+package linkShortenerV1
 
 import (
 	"context"

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api.link_shortener.v1;
 
-option go_package = "github.com/olezhek28/link-shortener/pkg; link_shortener_v1";
+option go_package = "github.com/olezhek28/link-shortener/pkg; linkShortenerV1";
 
 import "google/api/annotations.proto";
 //import "validate/validate.proto";

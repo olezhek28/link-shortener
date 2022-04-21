@@ -1,4 +1,4 @@
-package link_shortener
+package linkShortener
 
 import "github.com/olezhek28/link-shortener/internal/app/repository"
 

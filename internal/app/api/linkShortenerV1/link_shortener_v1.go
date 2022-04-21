@@ -1,7 +1,7 @@
-package link_shortener_v1
+package linkShortenerV1
 
 import (
-	linkShortener "github.com/olezhek28/link-shortener/internal/app/service/link_shortener"
+	"github.com/olezhek28/link-shortener/internal/app/service/linkShortener"
 	desc "github.com/olezhek28/link-shortener/pkg/link_shortener/v1"
 )
 

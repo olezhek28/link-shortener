@@ -5,7 +5,7 @@ import (
 
 	"github.com/olezhek28/link-shortener/internal/app/pkg/db"
 	"github.com/olezhek28/link-shortener/internal/app/repository"
-	linkShortener "github.com/olezhek28/link-shortener/internal/app/service/link_shortener"
+	"github.com/olezhek28/link-shortener/internal/app/service/linkShortener"
 )
 
 type serviceProvider struct {
