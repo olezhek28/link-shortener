@@ -1,30 +1,33 @@
-version: '3'
+version: '3.8'
 services:
-    db:
-        image: postgres:13-alpine
-        environment:
-            - "POSTGRES_DB=sample_db"
-            - "POSTGRES_PASSWORD=sample_pass"
-            - "POSTGRES_USER=postgres"
-            - "PGDATA=/var/lib/postgresql/data/notification"
-        ports:
-            - "5444:5432"
-        command: ["postgres", "-c", "log_statement=all"]
+  db:
+    image: postgres:14-alpine3.15
+    restart: always
+    environment:
+      POSTGRES_DB: sample_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sample_pass
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5444:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
 
-    pgbouncer:
-        image: edoburu/pgbouncer:latest
-        environment:
-        - "DB_NAME=sample_db"
-        - "DB_PASSWORD=sample_pass"
-        - "DB_USER=postgres"
-        - "DB_HOST=db"
-        - "POOL_MODE=transaction"
-        ports:
-        - "5445:5432"
+  pgbouncer:
+    image: edoburu/pgbouncer:1.12.0
+    environment:
+      - "DB_NAME=sample_db"
+      - "DB_PASSWORD=sample_pass"
+      - "DB_USER=postgres"
+      - "DB_HOST=db"
+      - "POOL_MODE=transaction"
+    ports:
+      - "5445:5432"
 
-    goose:
-        build: ./migrations/
-        environment:
-            DB_HOST: db
-        ports:
-            - "5446:5432"
+#    goose:
+#        build: ./migrations/
+#        environment:
+#            DB_HOST: db
+#        ports:
+#            - "5446:5432"
+
