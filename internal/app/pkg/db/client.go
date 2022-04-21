@@ -3,7 +3,9 @@ package db
 import (
 	"fmt"
 
+	_ "github.com/jackc/pgx/v4"
 	"github.com/jmoiron/sqlx"
+	//_ "github.com/lib/pq"
 )
 
 type IClient interface {

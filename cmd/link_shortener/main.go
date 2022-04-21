@@ -4,8 +4,6 @@ import (
 	"context"
 	"log"
 
-	_ "github.com/jackc/pgx/stdlib"
-	_ "github.com/lib/pq"
 	"github.com/olezhek28/link-shortener/internal/app/pkg/app"
 )
 

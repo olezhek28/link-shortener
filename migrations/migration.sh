@@ -2,7 +2,7 @@
 
 export MIGRATION_DIR=./migrations
 export DB_HOST="db"
-export DB_PORT="5444"
+export DB_PORT="5432"
 export DB_NAME="sample_db"
 export DB_USER="postgres"
 export DB_PASSWORD="sample_pass"
