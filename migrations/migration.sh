@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export MIGRATION_DIR=./migrations
-export DB_HOST="localhost"
+export DB_HOST="db"
 export DB_PORT="5444"
 export DB_NAME="sample_db"
 export DB_USER="postgres"
