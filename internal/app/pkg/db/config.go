@@ -2,12 +2,16 @@ package db
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"time"
+
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 const (
-	dbPassEscSeq = "{password}"
+	dbPassEscSeq    = "{password}"
+	postgresEnvName = "POSTGRES_DSN"
 )
 
 type Config struct {
@@ -18,17 +22,20 @@ type Config struct {
 }
 
 // GetDbConfig ...
-func GetDbConfig() *Config {
+func GetDbConfig() (*pgxpool.Config, error) {
 	password := "sample_pass"
-	DbDsn := fmt.Sprintf("host=%s port=%s user=%s password={password} dbname=%s sslmode=%s",
-		"localhost", "5445", "postgres", "sample_db", "disable")
 
-	dbDsn := strings.ReplaceAll(DbDsn, dbPassEscSeq, password)
-
-	return &Config{
-		DbDsn:           dbDsn,
-		MaxOpenConns:    20,
-		ConnMaxIdleTime: 3 * time.Second,
-		MaxIdleConns:    2,
+	dbDsn := os.Getenv(postgresEnvName)
+	if len(dbDsn) == 0 {
+		return nil, fmt.Errorf("DB params not found")
 	}
+
+	dbDsn = strings.ReplaceAll(dbDsn, dbPassEscSeq, password)
+
+	poolConfig, err := pgxpool.ParseConfig(dbDsn)
+	if err != nil {
+		return nil, err
+	}
+
+	return poolConfig, nil
 }

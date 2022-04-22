@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"sync"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -14,8 +15,8 @@ import (
 )
 
 const (
-	httpPort = ":80"
-	grpcPort = ":50051"
+	httpPortEnvName = "HTTP_PORT"
+	grpcPortEnvName = "GRPC_PORT"
 )
 
 type App struct {
@@ -24,6 +25,9 @@ type App struct {
 
 	grpcServer *grpc.Server
 	mux        *runtime.ServeMux
+
+	grpcPort string
+	httpPort string
 }
 
 func NewApp(ctx context.Context) (*App, error) {
@@ -53,6 +57,7 @@ func (a *App) Run() error {
 
 func (a *App) initDeps(ctx context.Context) error {
 	inits := []func(context.Context) error{
+		a.initEnv,
 		a.initServiceProvider,
 		a.initServer,
 		a.initGRPCServer,
@@ -66,6 +71,13 @@ func (a *App) initDeps(ctx context.Context) error {
 			return err
 		}
 	}
+
+	return nil
+}
+
+func (a *App) initEnv(ctx context.Context) error {
+	a.grpcPort = os.Getenv(grpcPortEnvName)
+	a.httpPort = os.Getenv(httpPortEnvName)
 
 	return nil
 }
@@ -92,9 +104,11 @@ func (a *App) initGRPCServer(ctx context.Context) error {
 
 func (a *App) initPublicHTTPHandlers(ctx context.Context) error {
 	a.mux = runtime.NewServeMux()
+	// TODO will be make auth
+	// nolint
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
-	err := desc.RegisterLinkShortenerV1HandlerFromEndpoint(ctx, a.mux, grpcPort, opts)
+	err := desc.RegisterLinkShortenerV1HandlerFromEndpoint(ctx, a.mux, a.grpcPort, opts)
 	if err != nil {
 		return err
 	}
@@ -103,7 +117,7 @@ func (a *App) initPublicHTTPHandlers(ctx context.Context) error {
 }
 
 func (a *App) initDB(ctx context.Context) error {
-	err := a.serviceProvider.DB.Open()
+	err := a.serviceProvider.DB.Open(ctx)
 	if err != nil {
 		return err
 	}
@@ -112,7 +126,7 @@ func (a *App) initDB(ctx context.Context) error {
 }
 
 func (a *App) runGRPC(wg *sync.WaitGroup) error {
-	list, err := net.Listen("tcp", grpcPort)
+	list, err := net.Listen("tcp", a.grpcPort)
 	if err != nil {
 		return err
 	}
@@ -125,7 +139,7 @@ func (a *App) runGRPC(wg *sync.WaitGroup) error {
 		}
 	}()
 
-	log.Printf("Run gRPC server on %s port\n", grpcPort)
+	log.Printf("Run gRPC server on %s port\n", a.grpcPort)
 	return nil
 }
 
@@ -133,11 +147,11 @@ func (a *App) runPublicHTTP(wg *sync.WaitGroup) error {
 	go func() {
 		defer wg.Done()
 
-		if err := http.ListenAndServe(httpPort, a.mux); err != nil {
+		if err := http.ListenAndServe(a.httpPort, a.mux); err != nil {
 			log.Fatalf("failed to process muxer: %s", err.Error())
 		}
 	}()
 
-	log.Printf("Run public http handler on %s port\n", httpPort)
+	log.Printf("Run public http handler on %s port\n", a.httpPort)
 	return nil
 }

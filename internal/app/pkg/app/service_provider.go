@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"log"
 
 	"github.com/olezhek28/link-shortener/internal/app/pkg/db"
 	"github.com/olezhek28/link-shortener/internal/app/repository"
@@ -32,16 +33,21 @@ func (s *serviceProvider) GetLinkShortenerService(ctx context.Context) *linkShor
 // GetLinksRepository ...
 func (s *serviceProvider) GetLinksRepository(ctx context.Context) repository.ILinks {
 	if s.linksRepository == nil {
-		s.linksRepository = repository.NewLinksRepository(ctx, s.GetDB(ctx))
+		s.linksRepository = repository.NewLinksRepository(ctx, s.GetDB())
 	}
 
 	return s.linksRepository
 }
 
 // GetDB ...
-func (s *serviceProvider) GetDB(ctx context.Context) db.IClient {
+func (s *serviceProvider) GetDB() db.IClient {
 	if s.DB == nil {
-		s.DB = db.NewClient(db.GetDbConfig())
+		config, err := db.GetDbConfig()
+		if err != nil {
+			log.Fatalf("failed to get db config: %s", err.Error())
+		}
+
+		s.DB = db.NewClient(config)
 	}
 
 	return s.DB

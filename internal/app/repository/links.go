@@ -39,15 +39,8 @@ func (r *linksRepository) GetLongLink(ctx context.Context, shortLink string) (st
 		return "", err
 	}
 
-	row, err := r.db.DB().QueryContext(ctx, query, args...)
-	if err != nil {
-		return "", err
-	}
-	defer row.Close()
-
-	row.Next()
 	var longLink string
-	err = row.Scan(&longLink)
+	err = r.db.DB().QueryRow(ctx, query, args...).Scan(&longLink)
 	if err != nil {
 		return "", err
 	}
@@ -68,15 +61,8 @@ func (r *linksRepository) GetShortLink(ctx context.Context, longLink string) (st
 		return "", err
 	}
 
-	row, err := r.db.DB().QueryContext(ctx, query, args...)
-	if err != nil {
-		return "", err
-	}
-	defer row.Close()
-
-	row.Next()
 	var shortLink string
-	err = row.Scan(&shortLink)
+	err = r.db.DB().QueryRow(ctx, query, args...).Scan(&shortLink)
 	if err != nil {
 		return "", err
 	}
