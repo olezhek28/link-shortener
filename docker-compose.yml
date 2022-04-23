@@ -19,15 +19,18 @@ services:
       - ./configs/postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
 
   pgbouncer:
-    image: edoburu/pgbouncer:1.12.0
+    image: bitnami/pgbouncer:1.17.0
     environment:
       - "DB_NAME=${POSTGRES_DB}"
       - "DB_USER=${POSTGRES_USER}"
       - "DB_PASSWORD=${POSTGRES_PASSWORD}"
       - "DB_HOST=db"
       - "POOL_MODE=transaction"
+      - "PGBOUNCER_IGNORE_STARTUP_PARAMETERS=extra_float_digits"
     ports:
       - "5445:5432"
+    depends_on:
+      - db
 
 #  goose:
 #    build: ./migrations/
