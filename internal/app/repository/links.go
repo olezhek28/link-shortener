@@ -6,8 +6,11 @@ import (
 	"context"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/jackc/pgx/v4"
 	"github.com/olezhek28/link-shortener/internal/app/pkg/db"
 	"github.com/olezhek28/link-shortener/internal/app/repository/table"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type ILinks interface {
@@ -41,6 +44,9 @@ func (r *linksRepository) GetLongLink(ctx context.Context, shortLink string) (st
 
 	var longLink string
 	err = r.db.DB().QueryRow(ctx, query, args...).Scan(&longLink)
+	if err == pgx.ErrNoRows {
+		return "", status.Error(codes.NotFound, "long link not found")
+	}
 	if err != nil {
 		return "", err
 	}
@@ -63,6 +69,9 @@ func (r *linksRepository) GetShortLink(ctx context.Context, longLink string) (st
 
 	var shortLink string
 	err = r.db.DB().QueryRow(ctx, query, args...).Scan(&shortLink)
+	if err == pgx.ErrNoRows {
+		return "", status.Error(codes.NotFound, "short link not found")
+	}
 	if err != nil {
 		return "", err
 	}
