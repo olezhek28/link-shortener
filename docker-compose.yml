@@ -3,42 +3,45 @@ version: '3.8'
 volumes:
   postgres_volume:
 
+
 services:
   db:
     image: postgres:14-alpine3.15
     restart: unless-stopped
     environment:
-      - "POSTGRES_DB=${POSTGRES_DB}"
-      - "POSTGRES_USER=${POSTGRES_USER}"
       - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
-      - "PGDATA=/var/lib/postgresql/data"
     ports:
       - "5444:5432"
     volumes:
       - postgres_volume:/var/lib/postgresql/data
-      - ./configs/postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./configs/postgres/docker-entrypoint-initdb.d/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  postgresql_exporter:
+    image: wrouesnel/postgres_exporter:v0.8.0
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: postgresql://postgres:sample_pass@db:5432/postgres?sslmode=disable
 
   pgbouncer:
     image: bitnami/pgbouncer:1.17.0
     environment:
-      - "DB_NAME=${POSTGRES_DB}"
-      - "DB_USER=${POSTGRES_USER}"
-      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
-      - "DB_HOST=db"
-      - "POOL_MODE=transaction"
+      - "POSTGRESQL_DATABASE=${POSTGRES_DB}"
+      - "POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRESQL_USERNAME=${POSTGRES_USER}"
+      - "POSTGRESQL_HOST=db"
+      - "PGBOUNCER_POOL_MODE=transaction"
       - "PGBOUNCER_IGNORE_STARTUP_PARAMETERS=extra_float_digits"
     ports:
       - "5445:5432"
     depends_on:
       - db
 
-#  goose:
-#    build: ./migrations/
-#    restart: unless-stopped
-#    environment:
-#      DB_HOST: db
-#    ports:
-#      - "5446:5432"
-#    depends_on:
-#      - db
-
+  goose:
+    build: ./migrations/
+    restart: on-failure
+    environment:
+      DB_HOST: db
+    ports:
+      - "5446:5432"
+    depends_on:
+      - pgbouncer
