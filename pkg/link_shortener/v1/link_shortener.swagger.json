@@ -115,7 +115,7 @@
     "v1GetLongLinkRequest": {
       "type": "object",
       "properties": {
-        "shortLink": {
+        "short_link": {
           "type": "string"
         }
       }
@@ -131,7 +131,7 @@
     "v1GetLongLinkResponseResult": {
       "type": "object",
       "properties": {
-        "longLink": {
+        "long_link": {
           "type": "string"
         }
       }
@@ -155,7 +155,7 @@
     "v1GetShortLinkResponseResult": {
       "type": "object",
       "properties": {
-        "shortLink": {
+        "short_link": {
           "type": "string"
         }
       }

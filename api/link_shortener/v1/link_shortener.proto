@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package api.link_shortener.v1;
 
-option go_package = "github.com/olezhek28/link-shortener/pkg; linkShortenerV1";
+option go_package = "github.com/olezhek28/link-shortener/pkg;linkShortenerV1";
 
 import "google/api/annotations.proto";
-//import "validate/validate.proto";
+import "validate/validate.proto";
 
 service LinkShortenerV1{
   rpc GetShortLink(GetShortLinkRequest) returns (GetShortLinkResponse) {
@@ -23,24 +23,24 @@ service LinkShortenerV1{
 }
 
 message GetShortLinkRequest {
-  string long_link = 1 [json_name = "long_link"];
+  string long_link = 1 [json_name = "long_link", (validate.rules).string.min_len = 1];
 }
 
 message GetShortLinkResponse {
   message Result {
-    string short_link = 1;
+    string short_link = 1 [json_name = "short_link"];
   }
 
   Result result = 1;
 }
 
 message GetLongLinkRequest {
-  string short_link = 1;
+  string short_link = 1 [json_name = "short_link", (validate.rules).string.min_len = 1];
 }
 
 message GetLongLinkResponse {
   message Result {
-    string long_link = 1;
+    string long_link = 1 [json_name = "long_link"];
   }
 
   Result result = 1;

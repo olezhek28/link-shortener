@@ -11,6 +11,8 @@ plugins:
     opt: paths=source_relative
   - name: openapiv2
     out: pkg/
-#  - name: validate
-#    out: pkg/
-#    opt: paths=source_relative
+  - name: validate
+    out: pkg/
+    opt:
+      - lang=go
+      - paths=source_relative

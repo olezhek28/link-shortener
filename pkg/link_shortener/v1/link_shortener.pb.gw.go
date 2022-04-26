@@ -2,7 +2,7 @@
 // source: link_shortener/v1/link_shortener.proto
 
 /*
-Package  linkShortenerV1 is a reverse proxy.
+Package linkShortenerV1 is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
