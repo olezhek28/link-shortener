@@ -7,6 +7,11 @@ import (
 )
 
 func (i *Implementation) GetShortLink(ctx context.Context, req *desc.GetShortLinkRequest) (*desc.GetShortLinkResponse, error) {
+	err := req.Validate()
+	if err != nil {
+		return nil, err
+	}
+	
 	shortLink, err := i.linkShortenerService.GetShortLink(ctx, req.GetLongLink())
 	if err != nil {
 		return nil, err
