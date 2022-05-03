@@ -11,7 +11,6 @@ func (i *Implementation) GetShortLink(ctx context.Context, req *desc.GetShortLin
 	if err != nil {
 		return nil, err
 	}
-	
 	shortLink, err := i.linkShortenerService.GetShortLink(ctx, req.GetLongLink())
 	if err != nil {
 		return nil, err

@@ -32,7 +32,7 @@ services:
       - "PGBOUNCER_POOL_MODE=transaction"
       - "PGBOUNCER_IGNORE_STARTUP_PARAMETERS=extra_float_digits"
     ports:
-      - "5445:5432"
+      - "6432:6432"
     depends_on:
       - db
 

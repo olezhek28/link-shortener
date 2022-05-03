@@ -17,3 +17,4 @@ vendor.protogen/
 .idea/
 /data/
 .vscode
+__debug_bin
