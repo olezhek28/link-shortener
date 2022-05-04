@@ -3,7 +3,7 @@
 export MIGRATION_DIR=./migrations
 export DB_HOST="localhost"
 export DB_PORT="5444"
-export DB_NAME="likns"
+export DB_NAME="links"
 export DB_USER="links"
 export DB_PASSWORD="jw8s0F4"
 export DB_SSL=disable

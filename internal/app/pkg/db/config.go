@@ -23,7 +23,7 @@ type Config struct {
 
 // GetDbConfig ...
 func GetDbConfig() (*pgxpool.Config, error) {
-	password := "sample_pass"
+	password := "jw8s0F4"
 
 	dbDsn := os.Getenv(postgresEnvName)
 	if len(dbDsn) == 0 {
@@ -36,6 +36,8 @@ func GetDbConfig() (*pgxpool.Config, error) {
 	if err != nil {
 		return nil, err
 	}
+	poolConfig.ConnConfig.BuildStatementCache = nil
+	poolConfig.ConnConfig.PreferSimpleProtocol = true
 
 	return poolConfig, nil
 }
