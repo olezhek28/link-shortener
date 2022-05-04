@@ -8,9 +8,9 @@ import "google/api/annotations.proto";
 import "validate/validate.proto";
 
 service LinkShortenerV1{
-  rpc GetShortLink(GetShortLinkRequest) returns (GetShortLinkResponse) {
+  rpc AddLink(AddLinkRequest) returns (AddLinkResponse) {
     option (google.api.http) = {
-      post: "/link-shortener/v1/short-link/get"
+      post: "/link-shortener/v1/add-link"
       body: "*"
     };
   }
@@ -22,11 +22,11 @@ service LinkShortenerV1{
   }
 }
 
-message GetShortLinkRequest {
+message AddLinkRequest {
   string long_link = 1 [json_name = "long_link", (validate.rules).string.min_len = 1];
 }
 
-message GetShortLinkResponse {
+message AddLinkResponse {
   message Result {
     string short_link = 1 [json_name = "short_link"];
   }

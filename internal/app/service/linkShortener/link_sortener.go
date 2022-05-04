@@ -1,13 +1,24 @@
 package linkShortener
 
-import "github.com/olezhek28/link-shortener/internal/app/repository"
+import (
+	"github.com/olezhek28/link-shortener/internal/app/pkg/api/redis"
+	"github.com/olezhek28/link-shortener/internal/app/repository"
+)
 
 type Service struct {
+	redisClient redis.IRedisClient
+
 	linksRepository repository.ILinks
 }
 
-func NewLinkShortenerService(linksRepository repository.ILinks) *Service {
+func NewLinkShortenerService(
+	redisClient redis.IRedisClient,
+
+	linksRepository repository.ILinks,
+) *Service {
 	return &Service{
+		redisClient: redisClient,
+
 		linksRepository: linksRepository,
 	}
 }

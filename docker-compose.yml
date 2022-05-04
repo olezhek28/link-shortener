@@ -46,3 +46,8 @@ services:
       - "5446:5432"
     depends_on:
       - pgbouncer
+
+  redis:
+    image: redis:7.0.0-alpine3.15
+    ports:
+      - "6379:6379"
