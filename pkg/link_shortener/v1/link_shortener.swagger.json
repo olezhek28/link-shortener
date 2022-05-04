@@ -1,0 +1,164 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "link_shortener/v1/link_shortener.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "LinkShortenerV1"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/link-shortener/v1/long-link/get": {
+      "post": {
+        "operationId": "LinkShortenerV1_GetLongLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetLongLinkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1GetLongLinkRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LinkShortenerV1"
+        ]
+      }
+    },
+    "/link-shortener/v1/short-link/get": {
+      "post": {
+        "operationId": "LinkShortenerV1_GetShortLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetShortLinkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1GetShortLinkRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LinkShortenerV1"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1GetLongLinkRequest": {
+      "type": "object",
+      "properties": {
+        "short_link": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetLongLinkResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1GetLongLinkResponseResult"
+        }
+      }
+    },
+    "v1GetLongLinkResponseResult": {
+      "type": "object",
+      "properties": {
+        "long_link": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetShortLinkRequest": {
+      "type": "object",
+      "properties": {
+        "long_link": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetShortLinkResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1GetShortLinkResponseResult"
+        }
+      }
+    },
+    "v1GetShortLinkResponseResult": {
+      "type": "object",
+      "properties": {
+        "short_link": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
