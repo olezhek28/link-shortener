@@ -2,7 +2,7 @@ package linkShortener
 
 import (
 	"context"
-	"crypto/md5"
+	"crypto/sha256"
 	"encoding/hex"
 	"strings"
 	"time"
@@ -14,18 +14,24 @@ const (
 )
 
 func (s *Service) AddLink(ctx context.Context, longLink string) (string, error) {
-	hash := md5.Sum([]byte(longLink))
+	hash := sha256.Sum256([]byte(longLink))
 	var builder strings.Builder
 	builder.WriteString(prefix)
 	builder.WriteString(hex.EncodeToString(hash[:]))
 	shortLink := builder.String()
 
-	err := s.redisClient.Set(ctx, shortLink, longLink, expiration)
+	// check exist
+	_, err := s.linksRepository.GetLongLink(ctx, shortLink)
+	if err == nil {
+		return shortLink, nil
+	}
+
+	err = s.linksRepository.AddLink(ctx, longLink, shortLink)
 	if err != nil {
 		return "", err
 	}
 
-	err = s.linksRepository.AddLink(ctx, longLink, shortLink)
+	err = s.redisClient.Set(ctx, shortLink, longLink, expiration)
 	if err != nil {
 		return "", err
 	}
