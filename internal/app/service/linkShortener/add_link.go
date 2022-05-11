@@ -21,8 +21,8 @@ func (s *Service) AddLink(ctx context.Context, longLink string) (string, error) 
 	shortLink := builder.String()
 
 	// check exist
-	_, err := s.linksRepository.GetLongLink(ctx, shortLink)
-	if err == nil {
+	_, err := s.redisClient.Get(ctx, shortLink)
+	if nil == err {
 		return shortLink, nil
 	}
 
