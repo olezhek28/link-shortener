@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/olezhek28/link-shortener/internal/app/pkg/api/redis"
 	"github.com/olezhek28/link-shortener/internal/app/pkg/db"
 	"github.com/olezhek28/link-shortener/internal/app/repository"
 	"github.com/olezhek28/link-shortener/internal/app/service/linkShortener"
@@ -13,6 +14,8 @@ type serviceProvider struct {
 	DB db.IClient
 
 	linkShortenerService *linkShortener.Service
+
+	redisClient redis.IRedisClient
 
 	linksRepository repository.ILinks
 }
@@ -24,10 +27,22 @@ func newServiceProvider() *serviceProvider {
 // GetLinkShortenerService ...
 func (s *serviceProvider) GetLinkShortenerService(ctx context.Context) *linkShortener.Service {
 	if s.linkShortenerService == nil {
-		s.linkShortenerService = linkShortener.NewLinkShortenerService(s.GetLinksRepository(ctx))
+		s.linkShortenerService = linkShortener.NewLinkShortenerService(
+			s.GetRedisClient(),
+
+			s.GetLinksRepository(ctx),
+		)
 	}
 
 	return s.linkShortenerService
+}
+
+func (s *serviceProvider) GetRedisClient() redis.IRedisClient {
+	if s.redisClient == nil {
+		s.redisClient = redis.NewRedisClient()
+	}
+
+	return s.redisClient
 }
 
 // GetLinksRepository ...
