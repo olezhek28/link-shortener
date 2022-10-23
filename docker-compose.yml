@@ -2,7 +2,8 @@ version: '3.8'
 
 volumes:
   postgres_volume:
-
+  prometheus_data:
+  grafana_data:
 
 services:
   db:
@@ -20,10 +21,11 @@ services:
     image: wrouesnel/postgres_exporter:v0.8.0
     restart: unless-stopped
     environment:
-      DATA_SOURCE_NAME: postgresql://postgres:sample_pass@db:5432/postgres?sslmode=disable
+      DATA_SOURCE_NAME: ${DATA_SOURCE_NAME}
 
   pgbouncer:
     image: bitnami/pgbouncer:1.17.0
+    restart: unless-stopped
     environment:
       - "POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}"
       - "POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}"
@@ -46,3 +48,19 @@ services:
       - "5446:5432"
     depends_on:
       - pgbouncer
+
+  prometheus:
+    image: prom/prometheus:v2.39.1
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:5.3.4
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
