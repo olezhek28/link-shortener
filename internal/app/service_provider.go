@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/olezhek28/link-shortener/internal/app/pkg/db"
-	"github.com/olezhek28/link-shortener/internal/app/repository"
-	"github.com/olezhek28/link-shortener/internal/app/service/linkShortener"
+	"github.com/olezhek28/link-shortener/internal/pkg/db"
+	"github.com/olezhek28/link-shortener/internal/repository"
+	"github.com/olezhek28/link-shortener/internal/service/linkShortener"
 )
 
 type serviceProvider struct {

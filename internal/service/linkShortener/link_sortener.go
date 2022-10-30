@@ -1,6 +1,6 @@
 package linkShortener
 
-import "github.com/olezhek28/link-shortener/internal/app/repository"
+import "github.com/olezhek28/link-shortener/internal/repository"
 
 type Service struct {
 	linksRepository repository.ILinks

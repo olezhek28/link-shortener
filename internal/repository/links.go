@@ -7,8 +7,8 @@ import (
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v4"
-	"github.com/olezhek28/link-shortener/internal/app/pkg/db"
-	"github.com/olezhek28/link-shortener/internal/app/repository/table"
+	"github.com/olezhek28/link-shortener/internal/pkg/db"
+	"github.com/olezhek28/link-shortener/internal/repository/table"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

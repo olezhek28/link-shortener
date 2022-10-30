@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/olezhek28/link-shortener/internal/app/pkg/app"
+	"github.com/olezhek28/link-shortener/internal/app"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
