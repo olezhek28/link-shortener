@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"os"
 	"sync"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -76,8 +75,8 @@ func (a *App) initDeps(ctx context.Context) error {
 }
 
 func (a *App) initEnv(ctx context.Context) error {
-	a.grpcPort = os.Getenv(grpcPortEnvName)
-	a.httpPort = os.Getenv(httpPortEnvName)
+	a.grpcPort = ":7003" //os.Getenv(grpcPortEnvName)
+	a.httpPort = ":7004" //os.Getenv(httpPortEnvName)
 
 	return nil
 }
