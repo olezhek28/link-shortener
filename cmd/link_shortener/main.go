@@ -35,7 +35,10 @@ func main() {
 
 	go func() {
 		http.Handle("/metrics", promhttp.Handler())
-		http.ListenAndServe(":2112", nil)
+		// nolint
+		if err := http.ListenAndServe(":2112", nil); err != nil {
+			log.Fatal(err)
+		}
 	}()
 
 	a, err := app.NewApp(ctx)

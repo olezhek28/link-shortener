@@ -19,8 +19,8 @@ import (
 )
 
 const (
-	httpPortEnvName = "HTTP_PORT"
-	grpcPortEnvName = "GRPC_PORT"
+	// httpPortEnvName = "HTTP_PORT"
+	// grpcPortEnvName = "GRPC_PORT"
 
 	timeFormat = "2006-02-01"
 )
@@ -88,8 +88,8 @@ func (a *App) initDeps(ctx context.Context) error {
 }
 
 func (a *App) initEnv(ctx context.Context) error {
-	a.grpcPort = ":7003" //os.Getenv(grpcPortEnvName)
-	a.httpPort = ":7004" //os.Getenv(httpPortEnvName)
+	a.grpcPort = ":7003" // os.Getenv(grpcPortEnvName)
+	a.httpPort = ":7004" // os.Getenv(httpPortEnvName)
 
 	return nil
 }
@@ -123,6 +123,8 @@ func (a *App) initPublicHTTPHandlers(ctx context.Context) error {
 	// nolint
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
+	// TODO will be make auth
+	// nolint
 	a.httpServer = &http.Server{
 		Addr: a.httpPort,
 		// add handler with middleware
