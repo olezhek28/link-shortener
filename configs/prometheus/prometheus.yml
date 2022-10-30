@@ -11,4 +11,4 @@ scrape_configs:
       - targets: ["postgresql_exporter:9187"]
   - job_name: link-shortener
     static_configs:
-      - targets: ["localhost:2112"]
+      - targets: ["host.docker.internal:2112"]
