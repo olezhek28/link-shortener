@@ -1,14 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "link_shortener/v1/link_shortener.proto",
+    "title": "link_shortener.proto",
     "version": "version not set"
   },
-  "tags": [
-    {
-      "name": "LinkShortenerV1"
-    }
-  ],
   "consumes": [
     "application/json"
   ],
@@ -29,7 +24,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -61,7 +56,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -85,7 +80,7 @@
     "protobufAny": {
       "type": "object",
       "properties": {
-        "typeUrl": {
+        "type_url": {
           "type": "string"
         },
         "value": {
@@ -94,9 +89,12 @@
         }
       }
     },
-    "rpcStatus": {
+    "runtimeError": {
       "type": "object",
       "properties": {
+        "error": {
+          "type": "string"
+        },
         "code": {
           "type": "integer",
           "format": "int32"

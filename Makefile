@@ -45,3 +45,18 @@ install-go-deps: .install-go-deps
 .PHONY: load-test
 load-test:
 	wrk -t12 -c400 -d30s -s ./load_tests/test.lua --latency http://localhost:80/link-shortener/v1/long-link/get
+
+PHONY: generate
+generate:
+		mkdir -p pkg/link_shortener/v1
+		protoc --proto_path vendor.protogen --proto_path api/link_shortener/v1 \
+				--go_out=pkg/link_shortener/v1 --go_opt=paths=import \
+				--go-grpc_out=pkg/link_shortener/v1 --go-grpc_opt=paths=import \
+				--grpc-gateway_out=pkg/link_shortener/v1 \
+				--grpc-gateway_opt=logtostderr=true \
+				--grpc-gateway_opt=paths=import \
+				--validate_out lang=go:pkg/link_shortener/v1 \
+				--swagger_out=allow_merge=true,merge_file_name=api:pkg/link_shortener/v1 \
+				api/link_shortener/v1/link_shortener.proto
+		mv pkg/link_shortener/v1/github.com/olezhek28/link-shortener/pkg/* pkg/link_shortener/v1/
+		rm -rf pkg/link_shortener/v1/github.com

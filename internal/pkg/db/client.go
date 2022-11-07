@@ -6,7 +6,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-type IClient interface {
+type Client interface {
 	Open(ctx context.Context) error
 	Close() error
 	DB() *pgxpool.Pool
@@ -17,7 +17,7 @@ type client struct {
 	config *pgxpool.Config
 }
 
-func NewClient(config *pgxpool.Config) IClient {
+func NewClient(config *pgxpool.Config) Client {
 	return &client{
 		config: config,
 	}

@@ -133,5 +133,5 @@ var LinkShortenerV1_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "link_shortener/v1/link_shortener.proto",
+	Metadata: "link_shortener.proto",
 }

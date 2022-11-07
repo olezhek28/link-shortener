@@ -1,6 +1,6 @@
 package redis
 
-//go:generate mockgen -destination=mocks/mock_redis_client.go -package=mocks . IRedisClient
+//go:generate mockgen -destination=mocks/mock_redis_client.go -package=mocks . Client
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-type IRedisClient interface {
+type Client interface {
 	Get(ctx context.Context, key string) (string, error)
 	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error
 }
@@ -18,7 +18,7 @@ type client struct {
 	redisClient *redis.Client
 }
 
-func NewRedisClient() IRedisClient {
+func NewClient() Client {
 	return &client{
 		redisClient: redis.NewClient(&redis.Options{
 			Addr:     "localhost:6379",

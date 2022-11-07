@@ -1,6 +1,6 @@
-package repository
+package links
 
-//go:generate mockgen --build_flags=--mod=mod -destination=mocks/mock_links_repository.go -package=mocks . ILinks
+//go:generate mockgen --build_flags=--mod=mod -destination=mocks/mock_links_repository.go -package=mocks . Repository
 
 import (
 	"context"
@@ -13,24 +13,24 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type ILinks interface {
+type Repository interface {
 	AddLink(ctx context.Context, longLink string, shortLink string) error
 	GetLongLink(ctx context.Context, shortLink string) (string, error)
 }
 
-type linksRepository struct {
-	db db.IClient
+type repository struct {
+	db db.Client
 }
 
 // NewLinksRepository ...
-func NewLinksRepository(ctx context.Context, db db.IClient) ILinks {
-	return &linksRepository{
+func NewLinksRepository(ctx context.Context, db db.Client) Repository {
+	return &repository{
 		db: db,
 	}
 }
 
 // AddLink ...
-func (r *linksRepository) AddLink(ctx context.Context, longLink string, shortLink string) error {
+func (r *repository) AddLink(ctx context.Context, longLink string, shortLink string) error {
 	builder := sq.Insert(table.Links).
 		PlaceholderFormat(sq.Dollar).
 		Columns("long_link", "short_link").
@@ -50,7 +50,7 @@ func (r *linksRepository) AddLink(ctx context.Context, longLink string, shortLin
 }
 
 // GetLongLink ...
-func (r *linksRepository) GetLongLink(ctx context.Context, shortLink string) (string, error) {
+func (r *repository) GetLongLink(ctx context.Context, shortLink string) (string, error) {
 	builder := sq.Select("long_link").
 		PlaceholderFormat(sq.Dollar).
 		From(table.Links).
