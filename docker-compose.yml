@@ -92,3 +92,13 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
       - '--log.level=debug'
+
+  redis:
+    image: redis:7.0.0-alpine3.15
+    ports:
+      - "6379:6379"
+
+  redis_exporter:
+    image: oliver006/redis_exporter:v1.37.0
+    command: "--redis.addr=redis://redis:6379 --web.listen-address=0.0.0.0:9121"
+    restart: unless-stopped

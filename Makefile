@@ -41,3 +41,7 @@ install-go-deps: .install-go-deps
 		go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
 		go install github.com/envoyproxy/protoc-gen-validate
 		go get github.com/fullstorydev/grpcui/...
+
+.PHONY: load-test
+load-test:
+	wrk -t12 -c400 -d30s -s ./load_tests/test.lua --latency http://localhost:80/link-shortener/v1/long-link/get

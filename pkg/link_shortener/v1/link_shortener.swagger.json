@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/link-shortener/v1/add-link": {
+      "post": {
+        "operationId": "LinkShortenerV1_AddLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddLinkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddLinkRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LinkShortenerV1"
+        ]
+      }
+    },
     "/link-shortener/v1/long-link/get": {
       "post": {
         "operationId": "LinkShortenerV1_GetLongLink",
@@ -40,38 +72,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1GetLongLinkRequest"
-            }
-          }
-        ],
-        "tags": [
-          "LinkShortenerV1"
-        ]
-      }
-    },
-    "/link-shortener/v1/short-link/get": {
-      "post": {
-        "operationId": "LinkShortenerV1_GetShortLink",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetShortLinkResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1GetShortLinkRequest"
             }
           }
         ],
@@ -112,6 +112,30 @@
         }
       }
     },
+    "v1AddLinkRequest": {
+      "type": "object",
+      "properties": {
+        "long_link": {
+          "type": "string"
+        }
+      }
+    },
+    "v1AddLinkResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1AddLinkResponseResult"
+        }
+      }
+    },
+    "v1AddLinkResponseResult": {
+      "type": "object",
+      "properties": {
+        "short_link": {
+          "type": "string"
+        }
+      }
+    },
     "v1GetLongLinkRequest": {
       "type": "object",
       "properties": {
@@ -132,30 +156,6 @@
       "type": "object",
       "properties": {
         "long_link": {
-          "type": "string"
-        }
-      }
-    },
-    "v1GetShortLinkRequest": {
-      "type": "object",
-      "properties": {
-        "long_link": {
-          "type": "string"
-        }
-      }
-    },
-    "v1GetShortLinkResponse": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/v1GetShortLinkResponseResult"
-        }
-      }
-    },
-    "v1GetShortLinkResponseResult": {
-      "type": "object",
-      "properties": {
-        "short_link": {
           "type": "string"
         }
       }

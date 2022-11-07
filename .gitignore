@@ -18,4 +18,6 @@ vendor.protogen/
 /data/
 .vscode
 __debug_bin
+/scripts/
+
 /cmd/link_shortener/LOCAL
