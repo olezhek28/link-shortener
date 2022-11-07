@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
@@ -25,7 +24,7 @@ type Config struct {
 func GetDbConfig() (*pgxpool.Config, error) {
 	password := "jw8s0F4"
 
-	dbDsn := os.Getenv(postgresEnvName)
+	dbDsn := "postgresql://links:{password}@localhost:6432/links?sslmode=disable&pool_max_conns=20" // os.Getenv(postgresEnvName)
 	if len(dbDsn) == 0 {
 		return nil, fmt.Errorf("DB params not found")
 	}
