@@ -4,7 +4,10 @@ import (
 	"context"
 	"time"
 
+	"github.com/jackc/pgx/v4"
 	"github.com/olezhek28/link-shortener/internal/metrics"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const (
@@ -22,6 +25,9 @@ func (s *Service) GetLongLink(ctx context.Context, shortLink string) (string, er
 	metrics.IncCacheHit("GetLongLink")
 
 	longLink, err = s.linksRepository.GetLongLink(ctx, shortLink)
+	if err == pgx.ErrNoRows {
+		return "", status.Error(codes.NotFound, "long link not found")
+	}
 	if err != nil {
 		return "", err
 	}

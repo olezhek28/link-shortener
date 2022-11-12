@@ -10,7 +10,7 @@ services:
     image: postgres:14-alpine3.15
     restart: unless-stopped
     environment:
-      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_PASSWORD=sample_pass"
     ports:
       - "5444:5432"
     volumes:
@@ -21,19 +21,19 @@ services:
     image: wrouesnel/postgres_exporter:v0.8.0
     restart: unless-stopped
     environment:
-      DATA_SOURCE_NAME: ${DATA_SOURCE_NAME}
+      DATA_SOURCE_NAME: ${PG_DSN}
 
   pgbouncer:
     image: bitnami/pgbouncer:1.17.0
     restart: unless-stopped
     environment:
-      - "POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}"
-      - "POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}"
-      - "POSTGRESQL_USERNAME=${POSTGRES_USER}"
+      - "POSTGRESQL_DATABASE=${PG_DATABASE}"
+      - "POSTGRESQL_PASSWORD=${PG_PASSWORD}"
+      - "POSTGRESQL_USERNAME=${PG_USER}"
       - "POSTGRESQL_HOST=db"
       - "PGBOUNCER_POOL_MODE=transaction"
       - "PGBOUNCER_IGNORE_STARTUP_PARAMETERS=extra_float_digits"
-      - "PGBOUNCER_DATABASE=${POSTGRESQL_DATABASE}"
+      - "PGBOUNCER_DATABASE=${PG_DATABASE}"
     ports:
       - "6432:6432"
     depends_on:

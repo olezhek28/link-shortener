@@ -4,33 +4,37 @@ import (
 	"context"
 
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/olezhek28/link-shortener/internal/config"
 )
 
 type Client interface {
-	Open(ctx context.Context) error
 	Close() error
 	DB() *pgxpool.Pool
 }
 
 type client struct {
-	db     *pgxpool.Pool
-	config *pgxpool.Config
+	db *pgxpool.Pool
 }
 
-func NewClient(config *pgxpool.Config) Client {
-	return &client{
-		config: config,
-	}
-}
-
-func (c *client) Open(ctx context.Context) error {
-	var err error
-	c.db, err = pgxpool.ConnectConfig(ctx, c.config)
+func NewClient(ctx context.Context, config config.PGConfig) (Client, error) {
+	poolConfig, err := pgxpool.ParseConfig(config.DSN())
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	poolConfig.MaxConns = config.MaxConnections()
+	poolConfig.MaxConnIdleTime = config.MaxConnectionIdleTime()
+	poolConfig.ConnConfig.BuildStatementCache = nil
+	poolConfig.ConnConfig.PreferSimpleProtocol = true
+
+	db, err := pgxpool.ConnectConfig(ctx, poolConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	return &client{
+		db: db,
+	}, nil
 }
 
 func (c *client) Close() error {

@@ -6,12 +6,10 @@ import (
 	"context"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v4"
 	"github.com/olezhek28/link-shortener/internal/pkg/db"
-	"github.com/olezhek28/link-shortener/internal/repository/table"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
+
+const tableName = "links"
 
 type Repository interface {
 	AddLink(ctx context.Context, longLink string, shortLink string) error
@@ -31,7 +29,7 @@ func NewLinksRepository(ctx context.Context, db db.Client) Repository {
 
 // AddLink ...
 func (r *repository) AddLink(ctx context.Context, longLink string, shortLink string) error {
-	builder := sq.Insert(table.Links).
+	builder := sq.Insert(tableName).
 		PlaceholderFormat(sq.Dollar).
 		Columns("long_link", "short_link").
 		Values(longLink, shortLink)
@@ -53,7 +51,7 @@ func (r *repository) AddLink(ctx context.Context, longLink string, shortLink str
 func (r *repository) GetLongLink(ctx context.Context, shortLink string) (string, error) {
 	builder := sq.Select("long_link").
 		PlaceholderFormat(sq.Dollar).
-		From(table.Links).
+		From(tableName).
 		Where(sq.Eq{"short_link": shortLink}).
 		Limit(1)
 
@@ -64,9 +62,6 @@ func (r *repository) GetLongLink(ctx context.Context, shortLink string) (string,
 
 	var longLink string
 	err = r.db.DB().QueryRow(ctx, query, args...).Scan(&longLink)
-	if err == pgx.ErrNoRows {
-		return "", status.Error(codes.NotFound, "long link not found")
-	}
 	if err != nil {
 		return "", err
 	}
