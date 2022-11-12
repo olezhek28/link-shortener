@@ -5,18 +5,22 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"os"
 	"sync"
 
+	grpcValidator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/olezhek28/link-shortener/internal/app/api/linkShortenerV1"
+	"github.com/olezhek28/link-shortener/internal/config"
+	"github.com/olezhek28/link-shortener/internal/logger"
+	"github.com/olezhek28/link-shortener/internal/metrics"
+	"github.com/olezhek28/link-shortener/internal/middleware"
 	desc "github.com/olezhek28/link-shortener/pkg/link_shortener/v1"
+	"go.uber.org/zap/zapcore"
 	"google.golang.org/grpc"
 )
 
 const (
-	httpPortEnvName = "HTTP_PORT"
-	grpcPortEnvName = "GRPC_PORT"
+	timeFormat = "2006-02-01"
 )
 
 type App struct {
@@ -24,10 +28,7 @@ type App struct {
 	serviceProvider   *serviceProvider
 
 	grpcServer *grpc.Server
-	mux        *runtime.ServeMux
-
-	grpcPort string
-	httpPort string
+	httpServer *http.Server
 }
 
 func NewApp(ctx context.Context) (*App, error) {
@@ -56,28 +57,26 @@ func (a *App) Run() error {
 }
 
 func (a *App) initDeps(ctx context.Context) error {
+	err := logger.Init(zapcore.DebugLevel, timeFormat)
+	if err != nil {
+		return err
+	}
+
 	inits := []func(context.Context) error{
-		a.initEnv,
+		config.Init,
+		metrics.Init,
 		a.initServiceProvider,
 		a.initServer,
 		a.initGRPCServer,
 		a.initPublicHTTPHandlers,
-		a.initDB,
 	}
 
 	for _, f := range inits {
-		err := f(ctx)
+		err = f(ctx)
 		if err != nil {
 			return err
 		}
 	}
-
-	return nil
-}
-
-func (a *App) initEnv(ctx context.Context) error {
-	a.grpcPort = os.Getenv(grpcPortEnvName)
-	a.httpPort = os.Getenv(httpPortEnvName)
 
 	return nil
 }
@@ -96,28 +95,30 @@ func (a *App) initServer(ctx context.Context) error {
 }
 
 func (a *App) initGRPCServer(ctx context.Context) error {
-	a.grpcServer = grpc.NewServer()
+	a.grpcServer = grpc.NewServer(
+		grpc.UnaryInterceptor(grpcValidator.UnaryServerInterceptor()),
+	)
+
 	desc.RegisterLinkShortenerV1Server(a.grpcServer, a.linkShortenerImpl)
 
 	return nil
 }
 
 func (a *App) initPublicHTTPHandlers(ctx context.Context) error {
-	a.mux = runtime.NewServeMux()
+	mux := runtime.NewServeMux()
 	// TODO will be make auth
 	// nolint
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
-	err := desc.RegisterLinkShortenerV1HandlerFromEndpoint(ctx, a.mux, a.grpcPort, opts)
-	if err != nil {
-		return err
+	// TODO will be make auth
+	// nolint
+	a.httpServer = &http.Server{
+		Addr: a.serviceProvider.GetHTTPConfig().Host(),
+		// add handler with middleware
+		Handler: middleware.AddLogger(middleware.AddMetrics(mux)),
 	}
 
-	return nil
-}
-
-func (a *App) initDB(ctx context.Context) error {
-	err := a.serviceProvider.DB.Open(ctx)
+	err := desc.RegisterLinkShortenerV1HandlerFromEndpoint(ctx, mux, a.serviceProvider.GetGRPCConfig().Host(), opts)
 	if err != nil {
 		return err
 	}
@@ -126,7 +127,7 @@ func (a *App) initDB(ctx context.Context) error {
 }
 
 func (a *App) runGRPC(wg *sync.WaitGroup) error {
-	list, err := net.Listen("tcp", a.grpcPort)
+	list, err := net.Listen("tcp", a.serviceProvider.GetGRPCConfig().Host())
 	if err != nil {
 		return err
 	}
@@ -139,7 +140,7 @@ func (a *App) runGRPC(wg *sync.WaitGroup) error {
 		}
 	}()
 
-	log.Printf("Run gRPC server on %s port\n", a.grpcPort)
+	log.Printf("Run gRPC server on %s port\n", a.serviceProvider.GetGRPCConfig().Host())
 	return nil
 }
 
@@ -147,11 +148,11 @@ func (a *App) runPublicHTTP(wg *sync.WaitGroup) error {
 	go func() {
 		defer wg.Done()
 
-		if err := http.ListenAndServe(a.httpPort, a.mux); err != nil {
+		if err := a.httpServer.ListenAndServe(); err != nil {
 			log.Fatalf("failed to process muxer: %s", err.Error())
 		}
 	}()
 
-	log.Printf("Run public http handler on %s port\n", a.httpPort)
+	log.Printf("Run public http handler on %s port\n", a.serviceProvider.GetHTTPConfig().Host())
 	return nil
 }

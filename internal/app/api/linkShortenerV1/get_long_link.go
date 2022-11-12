@@ -7,11 +7,6 @@ import (
 )
 
 func (i *Implementation) GetLongLink(ctx context.Context, req *desc.GetLongLinkRequest) (*desc.GetLongLinkResponse, error) {
-	err := req.Validate()
-	if err != nil {
-		return nil, err
-	}
-
 	longLink, err := i.linkShortenerService.GetLongLink(ctx, req.GetShortLink())
 	if err != nil {
 		return nil, err

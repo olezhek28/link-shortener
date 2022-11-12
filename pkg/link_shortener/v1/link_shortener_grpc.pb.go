@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LinkShortenerV1Client interface {
-	GetShortLink(ctx context.Context, in *GetShortLinkRequest, opts ...grpc.CallOption) (*GetShortLinkResponse, error)
+	AddLink(ctx context.Context, in *AddLinkRequest, opts ...grpc.CallOption) (*AddLinkResponse, error)
 	GetLongLink(ctx context.Context, in *GetLongLinkRequest, opts ...grpc.CallOption) (*GetLongLinkResponse, error)
 }
 
@@ -30,9 +30,9 @@ func NewLinkShortenerV1Client(cc grpc.ClientConnInterface) LinkShortenerV1Client
 	return &linkShortenerV1Client{cc}
 }
 
-func (c *linkShortenerV1Client) GetShortLink(ctx context.Context, in *GetShortLinkRequest, opts ...grpc.CallOption) (*GetShortLinkResponse, error) {
-	out := new(GetShortLinkResponse)
-	err := c.cc.Invoke(ctx, "/api.link_shortener.v1.LinkShortenerV1/GetShortLink", in, out, opts...)
+func (c *linkShortenerV1Client) AddLink(ctx context.Context, in *AddLinkRequest, opts ...grpc.CallOption) (*AddLinkResponse, error) {
+	out := new(AddLinkResponse)
+	err := c.cc.Invoke(ctx, "/api.link_shortener.v1.LinkShortenerV1/AddLink", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (c *linkShortenerV1Client) GetLongLink(ctx context.Context, in *GetLongLink
 // All implementations must embed UnimplementedLinkShortenerV1Server
 // for forward compatibility
 type LinkShortenerV1Server interface {
-	GetShortLink(context.Context, *GetShortLinkRequest) (*GetShortLinkResponse, error)
+	AddLink(context.Context, *AddLinkRequest) (*AddLinkResponse, error)
 	GetLongLink(context.Context, *GetLongLinkRequest) (*GetLongLinkResponse, error)
 	mustEmbedUnimplementedLinkShortenerV1Server()
 }
@@ -61,8 +61,8 @@ type LinkShortenerV1Server interface {
 type UnimplementedLinkShortenerV1Server struct {
 }
 
-func (UnimplementedLinkShortenerV1Server) GetShortLink(context.Context, *GetShortLinkRequest) (*GetShortLinkResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetShortLink not implemented")
+func (UnimplementedLinkShortenerV1Server) AddLink(context.Context, *AddLinkRequest) (*AddLinkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddLink not implemented")
 }
 func (UnimplementedLinkShortenerV1Server) GetLongLink(context.Context, *GetLongLinkRequest) (*GetLongLinkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLongLink not implemented")
@@ -80,20 +80,20 @@ func RegisterLinkShortenerV1Server(s grpc.ServiceRegistrar, srv LinkShortenerV1S
 	s.RegisterService(&LinkShortenerV1_ServiceDesc, srv)
 }
 
-func _LinkShortenerV1_GetShortLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetShortLinkRequest)
+func _LinkShortenerV1_AddLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddLinkRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LinkShortenerV1Server).GetShortLink(ctx, in)
+		return srv.(LinkShortenerV1Server).AddLink(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.link_shortener.v1.LinkShortenerV1/GetShortLink",
+		FullMethod: "/api.link_shortener.v1.LinkShortenerV1/AddLink",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LinkShortenerV1Server).GetShortLink(ctx, req.(*GetShortLinkRequest))
+		return srv.(LinkShortenerV1Server).AddLink(ctx, req.(*AddLinkRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -124,8 +124,8 @@ var LinkShortenerV1_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*LinkShortenerV1Server)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetShortLink",
-			Handler:    _LinkShortenerV1_GetShortLink_Handler,
+			MethodName: "AddLink",
+			Handler:    _LinkShortenerV1_AddLink_Handler,
 		},
 		{
 			MethodName: "GetLongLink",
@@ -133,5 +133,5 @@ var LinkShortenerV1_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "link_shortener/v1/link_shortener.proto",
+	Metadata: "link_shortener.proto",
 }

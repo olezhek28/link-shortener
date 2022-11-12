@@ -3,12 +3,22 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 
-	"github.com/olezhek28/link-shortener/internal/app/pkg/app"
+	"github.com/olezhek28/link-shortener/internal/app"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
 	ctx := context.Background()
+
+	go func() {
+		http.Handle("/metrics", promhttp.Handler())
+		// nolint
+		if err := http.ListenAndServe(":2112", nil); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	a, err := app.NewApp(ctx)
 	if err != nil {
