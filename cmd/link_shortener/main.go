@@ -11,7 +11,7 @@ import (
 
 func main() {
 	ctx := context.Background()
-	
+
 	go func() {
 		http.Handle("/metrics", promhttp.Handler())
 		// nolint

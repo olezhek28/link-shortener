@@ -98,5 +98,3 @@ func (s *serviceProvider) GetLinksRepository(ctx context.Context) links.Reposito
 
 	return s.linksRepository
 }
-
-

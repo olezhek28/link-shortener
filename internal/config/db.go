@@ -36,7 +36,7 @@ func GetDbConfig() (PGConfig, error) {
 	}
 
 	maxConnectionsStr := os.Getenv(maxConnectionsEnvName)
-	maxConnections, err := strconv.Atoi(maxConnectionsStr)
+	maxConnections, err := strconv.ParseInt(maxConnectionsStr, 10, 64)
 	if err != nil || maxConnections == 0 {
 		maxConnections = defaultMaxConnections
 	}
