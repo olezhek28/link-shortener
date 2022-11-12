@@ -10,6 +10,7 @@ import (
 	grpcValidator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/olezhek28/link-shortener/internal/app/api/linkShortenerV1"
+	"github.com/olezhek28/link-shortener/internal/config"
 	"github.com/olezhek28/link-shortener/internal/logger"
 	"github.com/olezhek28/link-shortener/internal/metrics"
 	"github.com/olezhek28/link-shortener/internal/middleware"
@@ -62,6 +63,7 @@ func (a *App) initDeps(ctx context.Context) error {
 	}
 
 	inits := []func(context.Context) error{
+		config.Init,
 		metrics.Init,
 		a.initServiceProvider,
 		a.initServer,
