@@ -1,0 +1,15 @@
+global:
+  resolve_timeout: 5m
+route:
+  repeat_interval: 5m
+  receiver: default
+  routes:
+    - receiver: "telegram"
+      group_wait: 10s
+      continue: true
+receivers:
+  - name: "default"
+  - name: "telegram"
+    webhook_configs:
+      - send_resolved: True
+        url: "http://alertmanager-bot:9087/alert/-"
