@@ -62,6 +62,7 @@ services:
       - '--storage.tsdb.retention.time=70d'
       - '--log.level=debug'
       - '--web.enable-lifecycle'
+      - '--web.external-url=http://prometheus.olezhek.ru'
 
   grafana:
     image: grafana/grafana:9.2.1-ubuntu
@@ -83,7 +84,7 @@ services:
       - prometheus
 
   alertmanager:
-    image: prom/alertmanager:v0.23.0
+    image: prom/alertmanager:v0.24.0
     restart: unless-stopped
     volumes:
       - ./configs/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
@@ -92,6 +93,7 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
       - '--log.level=debug'
+      - '--web.route-prefix=/alertmanager'
 
   redis:
     image: redis:7.0.0-alpine3.15
@@ -102,3 +104,11 @@ services:
     image: oliver006/redis_exporter:v1.37.0
     command: "--redis.addr=redis://redis:6379 --web.listen-address=0.0.0.0:9121"
     restart: unless-stopped
+
+  alertmanager-bot:
+    image: serg3091/prometheus_bot:v0.0.1
+    volumes:
+      - ./configs/alertmanager-bot/config.yaml:/config.yaml
+      - ./configs/alertmanager-bot/template.tmpl:/template.tmpl
+    restart: unless-stopped
+

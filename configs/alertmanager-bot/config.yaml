@@ -1,0 +1,6 @@
+telegram_token: "5140243680:AAFelp_EkXeaiEjy0bv9sD3KNBd2wAcG27o"
+template_path: "template.tmpl"
+time_zone: "Europe/Moscow"
+time_outdata: "2006-01-02 15:04:05"
+split_token: "|"
+split_msg_byte: 6000
